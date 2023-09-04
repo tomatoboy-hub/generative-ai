@@ -48,3 +48,5 @@ def index(request):
 
     return render(request, 'stable_ai/index.html')
 
+
+
