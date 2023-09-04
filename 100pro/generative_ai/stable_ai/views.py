@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 import requests
 import base64
 import os
+from .forms import GenerateImageForm
 
 engine_id = "stable-diffusion-xl-1024-v1-0"
 api_host = os.getenv('API_HOST', 'https://api.stability.ai')
@@ -12,6 +13,7 @@ if api_key is None:
 
 def index(request):
     if request.method == "POST":
+        text_prompt = request.POST.get('text_prompt', '') # ユーザーが入力したテキストを取得
         response = requests.post(
             f"{api_host}/v1/generation/{engine_id}/text-to-image",
             headers={
@@ -22,7 +24,7 @@ def index(request):
             json={
                 "text_prompts": [
                     {
-                        "text": "Girls With boyfriend"
+                        "text": text_prompt
                     }
                 ],
                 "cfg_scale": 7,
@@ -43,6 +45,6 @@ def index(request):
                 f.write(base64.b64decode(image["base64"]))
 
         return redirect('index')
-    
+
     return render(request, 'stable_ai/index.html')
 

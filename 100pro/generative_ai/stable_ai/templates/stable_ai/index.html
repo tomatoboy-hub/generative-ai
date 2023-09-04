@@ -9,6 +9,10 @@
 <body>
     <form action="{% url 'index' %}" method="post">
         {% csrf_token %}
+        
+        <label for="id_text_prompt">Text Prompt:</label>
+        <input type="text" name="text_prompt" id="id_text_prompt" required>
+        
         <button type="submit">Generate Image</button>
     </form>
     <img src="/media/v1_txt2img_0.png" alt="Generated Image">
