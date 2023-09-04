@@ -44,6 +44,7 @@ pip install -r requirements.txt
 
 ## Djangoアプリケーションの起動
 `manage.py` があるディレクトリに移動 100proにある
+以下を実行して表示されるURLを開く
 ```bash
 python manage.py runserver
 ```
