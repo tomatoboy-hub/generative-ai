@@ -22,6 +22,8 @@ from stable_ai import views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('', views.index, name='index'),
+    path('masking/upload', views.masking_upload, name='masking_upload'),
+    path('masking/result', views.masking_result, name='masking_result'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
