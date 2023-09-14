@@ -15,7 +15,7 @@ from PIL import Image
 
 engine_id = "stable-diffusion-xl-1024-v1-0"
 api_host = os.getenv('API_HOST', 'https://api.stability.ai')
-api_key = "sk-WSGCH3VWaCUlfTFVVjSijUJUJg4fVqWhuf8zUD34ylRQSwoQ"
+api_key = "API"
 
 if api_key is None:
     raise Exception("Missing Stability API key.")
@@ -79,11 +79,13 @@ def im2im(request):
             # comment.save()
             form.save()
             context = {}
-            images = SnsModel.objects.latest("image")
+            # images = SnsModel.objects.latest("image")
             dates = SnsModel.objects.latest("posted_date")
+            # SnsModelの中身を使う
             context["dates"] = dates
             # print(context)
             
+            # 取得した画像の名前をmedia/changed.に変更する
             def_name = str(dates.image)
             ext = def_name.split('.')[-1]
             new_name = f'../generative_ai/media/changed.{ext}'
@@ -91,6 +93,7 @@ def im2im(request):
             print(new_name)
             os.replace('../generative_ai/media/'+str(dates.image), new_name)
             
+            # JPEGの場合はPINGに変更する
             if ext=='jpg':
                 new_name = Image.open('../generative_ai/media/changed.jpg')
                 new_name.save('../generative_ai/media/changed.png')
