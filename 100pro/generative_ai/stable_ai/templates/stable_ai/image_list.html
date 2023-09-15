@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image List</title>
+</head>
+<body>
+    <h1>Uploaded Images</h1>
+    <a href="{% url 'index' %}"><button>Home</button></a>
+    <ul>
+        {% for img in images %}
+        <li>
+            <img src="{{ img.image.url }}" alt="Uploaded Image">
+            <!-- ここから画像を削除するためのボタン -->
+            <form action="{% url 'delete_image' img.id %}" method="post" style="display: inline;">
+                {% csrf_token %}
+                <button type="submit">Delete</button>
+            </form>
+            <!-- ここまで -->
+        </li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

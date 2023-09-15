@@ -24,6 +24,10 @@ urlpatterns = [
     path('', views.index, name='index'),
     path('masking/upload', views.masking_upload, name='masking_upload'),
     path('masking/result', views.masking_result, name='masking_result'),
+    path('images/', views.image_list, name='image_list'),
+    path('upload/', views.upload_image, name='upload_image'),
+    path('images/delete/<int:image_id>/', views.delete_image, name='delete_image'),
+    
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
