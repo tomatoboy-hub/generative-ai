@@ -1,5 +1,17 @@
+'''
+フォームを作成するためだけのpythonファイル
+'''
+
 from django import forms
-from .models import UploadedImage
+from django.views.generic.edit import CreateView
+from .models import SnsModel, UploadedImage
+
+class SnsForm(forms.ModelForm):
+    class Meta:
+        model = SnsModel
+        # fields = ["title", "content", "image","readtext"]
+        fields = ["content", "image"]
+
 class GenerateImageForm(forms.Form):
     text_prompt = forms.CharField(label='Text Prompt', max_length=300, widget=forms.Textarea)
     cfg_scale = forms.FloatField(label='Config Scale',initial=7, widget=forms.NumberInput(attrs={'type': 'range', 'min': 1, 'max': 10, 'step': 0.1}))

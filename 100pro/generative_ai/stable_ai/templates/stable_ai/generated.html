@@ -1,0 +1,35 @@
+{% extends "stable_ai/base.html" %} 
+
+{% block content %}
+{% comment %} データベースから画像と時間を取得し挿入 {% endcomment %}
+<h2 class="title">
+    image to image's result
+</h2>
+<br>
+
+<article class="media">
+    <div class="media-comment">
+        <div class="content">
+            <p>
+                <small>
+                    {{ dates.posted_date }}
+                </small>    
+                <br>
+            </p>
+            <h2>
+                入力されたテキストプロンプト
+            </h2>
+            <br>
+            <p>
+                {{ dates.content }}
+                <br>
+            </p>
+            <img src='/media/im2im_changed.png'>
+            {% comment %} <img src='/media/im2im_generated.png'> {% endcomment %}
+        </div>
+    </div>
+</article>
+{% comment %} <div class="notification">コメントはまだありません</div> {% endcomment %}
+
+{% endblock %}
+
