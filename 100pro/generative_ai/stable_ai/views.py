@@ -18,7 +18,7 @@ from io import BytesIO
 
 engine_id = "stable-diffusion-xl-1024-v1-0"
 api_host = os.getenv('API_HOST', 'https://api.stability.ai')
-api_key = "API"
+api_key = "sk-WSGCH3VWaCUlfTFVVjSijUJUJg4fVqWhuf8zUD34ylRQSwoQ"
 
 if api_key is None:
     raise Exception("Missing Stability API key.")
@@ -28,9 +28,10 @@ def add_margin(pil_img):
     new_width = 1024
     new_height = 1024
     result = Image.new(pil_img.mode, (new_width, new_height), 'white')
-    # result.paste(pil_img, (512-(width/2), 512-(height/2)))
-    result.paste(pil_img, (10, 10))
+    result.paste(pil_img, (512-int((width/2)), 512-int((height/2))))
+    # result.paste(pil_img, (10, 10))
     return result
+
 def index(request):
     form = GenerateImageForm(request.POST or None)
     
@@ -150,51 +151,51 @@ def im2im(request):
         else:
             print(form.errors)
             
-    #     # リサイズ前の画像を読み込み
-    #     img = Image.open(new_name)
-    #     # 読み込んだ画像の幅、高さを取得し半分に
-    #     if img.width >=1024:
-    #         (width, height) = ( 1024 , img.height * 1024 // img.width)            
-    #         # 画像をリサイズする
-    #         img_resized = img.resize((width, height))
-    #     elif img.height >= 1024: 
-    #         (width, height) = (img.width *1024 // img.height,  1024 )        
-    #          # 画像をリサイズする
-    #         img_resized = img.resize((width, height))
-    #     # ファイルを保存
-    #     img_resized.save('changed.png', quality=90)
+        # リサイズ前の画像を読み込み
+        img = Image.open(new_name)
+        # 読み込んだ画像の幅、高さを取得し半分に
+        if img.width >=1024:
+            (width, height) = ( 1024 , img.height * 1024 // img.width)            
+            # 画像をリサイズする
+            img_resized = img.resize((width, height))
+        elif img.height >= 1024: 
+            (width, height) = (img.width *1024 // img.height,  1024 )        
+             # 画像をリサイズする
+            img_resized = img.resize((width, height))
+        # ファイルを保存
+        img_resized.save('changed.png', quality=90)
         
-    #     response = requests.post(
-    #     f"{api_host}/v1/generation/{engine_id}/image-to-image",
-    #     headers={
-    #         "Accept": "application/json",
-    #         "Authorization": f"Bearer {api_key}"
-    #     },
-    #     # ここでデータベースから取得しデータベースに入れる
-    #     files={
-    #         # "init_image": open("./media/"+stable_ai.models.file_name, "rb")
-    #         "init_image": open("./media/changed.png", "rb")
-    #     },
-    #     data={
-    #         "image_strength": 0.35,
-    #         "init_image_mode": "IMAGE_STRENGTH",
-    #         "text_prompts[0][text]": dates.content,
-    #         # "text_prompts[0][text]": "more colorful",
-    #         "cfg_scale": 7,
-    #         "samples": 1,
-    #         "steps": 30,
-    #     }
-    # )        
+        response = requests.post(
+        f"{api_host}/v1/generation/{engine_id}/image-to-image",
+        headers={
+            "Accept": "application/json",
+            "Authorization": f"Bearer {api_key}"
+        },
+        # ここでデータベースから取得しデータベースに入れる
+        files={
+            # "init_image": open("./media/"+stable_ai.models.file_name, "rb")
+            "init_image": open("./media/changed.png", "rb")
+        },
+        data={
+            "image_strength": 0.35,
+            "init_image_mode": "IMAGE_STRENGTH",
+            "text_prompts[0][text]": dates.content,
+            # "text_prompts[0][text]": "more colorful",
+            "cfg_scale": 7,
+            "samples": 1,
+            "steps": 30,
+        }
+    )        
     
-    #     if response.status_code != 200:
-    #         print(response.status_code)
-    #         raise Exception("Non-200 response: " + str(response.text))
+        if response.status_code != 200:
+            print(response.status_code)
+            raise Exception("Non-200 response: " + str(response.text))
 
-    #     data = response.json()
+        data = response.json()
 
-    #     for i, image in enumerate(data["artifacts"]):
-    #         with open(f"./media/im2im_generated.png", "wb") as f:
-    #             f.write(base64.b64decode(image["base64"]))
+        for i, image in enumerate(data["artifacts"]):
+            with open(f"./media/im2im_generated.png", "wb") as f:
+                f.write(base64.b64decode(image["base64"]))
 
         # return render('generated', context)
         return render(request, 'stable_ai/generated.html',context)
