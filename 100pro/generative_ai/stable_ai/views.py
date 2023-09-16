@@ -18,7 +18,7 @@ from io import BytesIO
 
 engine_id = "stable-diffusion-xl-1024-v1-0"
 api_host = os.getenv('API_HOST', 'https://api.stability.ai')
-api_key = "sk-WSGCH3VWaCUlfTFVVjSijUJUJg4fVqWhuf8zUD34ylRQSwoQ"
+api_key = "API"
 
 if api_key is None:
     raise Exception("Missing Stability API key.")
