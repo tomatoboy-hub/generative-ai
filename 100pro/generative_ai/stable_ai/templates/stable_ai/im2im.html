@@ -1,0 +1,83 @@
+{% extends "stable_ai/base.html" %} 
+
+{% block content %}
+<form action="{% url 'im2im' %}" method="POST", enctype="multipart/form-data">
+    {% csrf_token %}
+
+    {{ screen_form.image_prompt.label_tag }} {{ screen_form.image_prompt }}
+    <br>
+    {{ screen_form.negative_prompt.label_tag }} {{ screen_form.negative_prompt }}
+    <br>
+
+    {{ screen_form.image_strength.label_tag }} {{ screen_form.image_strength }}
+    <output id="image_strength_output">{{ screen_form.image_strength.value }}</output>
+    <br>
+
+    {{ screen_form.cfg_scale.label_tag }} {{ screen_form.cfg_scale }}
+    <output id="cfg_scale_output">{{ screen_form.cfg_scale.value }}</output>
+    <br>
+
+    {{ screen_form.weight.label_tag }} {{ screen_form.weight }}
+    <output id="weight_output">{{ screen_form.weight.value }}</output>
+    <br>
+
+    {{ screen_form.negative_weight.label_tag }} {{ screen_form.negative_weight }}
+    <output id="negative_weight_output">{{ screen_form.negative_weight.value }}</output>
+    <br>
+
+    {{ screen_form.samples.label_tag }} {{ screen_form.samples }}
+    <output id="samples_output">{{ screen_form.samples.value }}</output>
+    <br>
+
+    {{ screen_form.seeds.label_tag }} {{ screen_form.seeds }}
+    <output id="seeds_output">{{ screen_form.seeds.value }}</output>
+    <br>
+
+    {{ screen_form.steps.label_tag }} {{ screen_form.steps }}
+    <output id="steps_output">{{ screen_form.steps.value }}</output>
+    <br>
+
+    <p>{{ form.as_p }}</p>    
+    {% comment %} <input type="text" name="content">  {% endcomment %}
+    <br>
+    <br>
+
+    <input type="file" name="image">
+    <input type="submit" id="submit" value="送信">
+    <br>
+    <img src="{{ dates.image }}" alt="your Image">
+
+</form>
+
+<script>
+    // JavaScript to update the values of the output fields
+    document.getElementById('{{ screen_form.image_strength.id_for_label }}').oninput = function() {
+        document.getElementById('image_strength_output').value = this.value;
+    }
+
+    document.getElementById('{{ screen_form.cfg_scale.id_for_label }}').oninput = function() {
+        document.getElementById('cfg_scale_output').value = this.value;
+    }
+
+    document.getElementById('{{ screen_form.weight.id_for_label }}').oninput = function() {
+        document.getElementById('weight_output').value = this.value;
+    }
+
+    document.getElementById('{{ screen_form.negative_weight.id_for_label }}').oninput = function() {
+        document.getElementById('negative_weight_output').value = this.value;
+    }
+
+    document.getElementById('{{ screen_form.samples.id_for_label }}').oninput = function() {
+        document.getElementById('samples_output').value = this.value;
+    }
+
+    document.getElementById('{{ screen_form.seeds.id_for_label }}').oninput = function() {
+        document.getElementById('seeds_output').value = this.value;
+    }
+
+    document.getElementById('{{ screen_form.steps.id_for_label }}').oninput = function() {
+        document.getElementById('steps_output').value = this.value;
+    }
+</script>
+{% endblock %}
+

@@ -1,0 +1,13 @@
+git push origin kitano 自分のbranchを更新
+！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+APIキーを確認しろ！！！！！！！！！！！！！！！！！！！！！！！
+！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
+git pull origin XXX 他人のbranchから引用
+
+export STABILITY_API_KEY="your_api_key_here"
+your_api_key_hereは自分のやつを入れなさい
+
+
+https://techpr.info/python/django-db-image/
+
+https://office54.net/python/django/image-file-upload#section7
