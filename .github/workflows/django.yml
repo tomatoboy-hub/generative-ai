@@ -27,4 +27,4 @@ jobs:
         pip install -r ./100pro/requirements.txt
     - name: Run Tests
       run: |
-        python ./100pro/generative_ai/manage.py test
+        python ./100pro/generative-ai/manage.py test
