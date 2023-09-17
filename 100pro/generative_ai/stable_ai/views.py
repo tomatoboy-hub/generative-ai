@@ -7,7 +7,7 @@ https://murasan-net.com/index.php/2023/03/07/automatic1111-img2img/
 import requests
 import base64
 import os
-from .forms import SnsForm, GenerateImageForm, ImageUploadForm
+from .forms import SnsForm, GenerateImageForm, GenerateImageToImageForm, ImageUploadForm
 from .models import SnsModel, UploadedImage
 import glob
 from PIL import Image
@@ -18,7 +18,8 @@ from io import BytesIO
 
 engine_id = "stable-diffusion-xl-1024-v1-0"
 api_host = os.getenv('API_HOST', 'https://api.stability.ai')
-api_key = "sk-WSGCH3VWaCUlfTFVVjSijUJUJg4fVqWhuf8zUD34ylRQSwoQ"
+api_key = os.getenv("STABILITY_API_KEY")
+# api_key = ""
 
 if api_key is None:
     raise Exception("Missing Stability API key.")
@@ -34,14 +35,13 @@ def add_margin(pil_img):
 
 def index(request):
     form = GenerateImageForm(request.POST or None)
-    
     if request.method == "POST" and form.is_valid():
         text_prompt = form.cleaned_data['text_prompt']
         cfg_scale = form.cleaned_data['cfg_scale']
         height = form.cleaned_data['height']
         width = form.cleaned_data['width']
         samples = form.cleaned_data['samples']
-        steps = form.cleaned_data['steps']
+        steps = form.cleaned_data['steps']        
 
         response = requests.post(
             f"{api_host}/v1/generation/{engine_id}/text-to-image",
@@ -76,13 +76,13 @@ def index(request):
             file = InMemoryUploadedFile(image_file, None, image_name, 'image/png', len(image_data), None)
 
             # モデルインスタンスを作成し、データベースに保存
-            uploaded_image = UploadedImage(image=file)
-            uploaded_image.save()
+            # uploaded_image = UploadedImage(image=file)
+            # uploaded_image.save()
 
     return render(request, 'stable_ai/index.html', {'form': form})
 
 def image_list(request):
-    images = UploadedImage.objects.all()
+    images =UploadedImage.objects.all()
     return render(request, 'stable_ai/image_list.html', {'images': images})
 
 
@@ -96,6 +96,7 @@ def upload_image(request):
         form = ImageUploadForm()
 
     return render(request, 'stable_ai/upload.html', {'form': form})
+
 def delete_image(request, image_id):
     if request.method == "POST":
         image = get_object_or_404(UploadedImage, id=image_id)
@@ -104,11 +105,25 @@ def delete_image(request, image_id):
 
 def im2im(request):
     print(request.method)
+    screen_form = GenerateImageToImageForm(request.POST or None)
+    form = SnsForm(request.POST, request.FILES)
+    
     if request.method == "POST":
-        form = SnsForm(request.POST, request.FILES)
-        print(form.is_valid())
+        if screen_form.is_valid():
+            image_prompt = screen_form.cleaned_data['image_prompt']
+            negative_prompt = screen_form.cleaned_data['negative_prompt']
+            image_strength = float(screen_form.cleaned_data['image_strength'] / 100)
+            weight = screen_form.cleaned_data['weight'] / 10
+            negative_weight = screen_form.cleaned_data['negative_weight'] / 10
+            cfg_scale = screen_form.cleaned_data['cfg_scale']
+            samples = screen_form.cleaned_data['samples']
+            seeds = screen_form.cleaned_data['seeds']
+            steps = screen_form.cleaned_data['steps']        
+        else:
+            print(screen_form.errors)
+
+        print("ok")
         if form.is_valid():
-            print("OK")
             # comment = form.save(commit=False)
             # # comment.image = request.FILES["image"]
             # comment.image = request.FILES
@@ -125,8 +140,8 @@ def im2im(request):
             def_name = str(dates.image)
             ext = def_name.split('.')[-1]
             new_name = f'../generative_ai/media/changed.{ext}'
-            
-            print(new_name)
+            print(str(dates.image))
+
             os.replace('../generative_ai/media/'+str(dates.image), new_name)
             
             # JPEGの場合はPINGに変更する
@@ -139,7 +154,6 @@ def im2im(request):
             
             # os.replace('../generative_ai/media/'+str(dates.image), new_name)
             
-            print('../generative_ai/media/'+str(dates.image))
             # context = {'images':images, 'dates':dates}
             # print(context[])
             # if not context[]:
@@ -163,8 +177,8 @@ def im2im(request):
              # 画像をリサイズする
             img_resized = img.resize((width, height))
         # ファイルを保存
-        img_resized.save('changed.png', quality=90)
-        
+        img_resized.save('../generative_ai/media/changed.png', quality=90)
+            
         response = requests.post(
         f"{api_host}/v1/generation/{engine_id}/image-to-image",
         headers={
@@ -176,14 +190,20 @@ def im2im(request):
             # "init_image": open("./media/"+stable_ai.models.file_name, "rb")
             "init_image": open("./media/changed.png", "rb")
         },
-        data={
-            "image_strength": 0.35,
+        data={           
             "init_image_mode": "IMAGE_STRENGTH",
-            "text_prompts[0][text]": dates.content,
-            # "text_prompts[0][text]": "more colorful",
-            "cfg_scale": 7,
-            "samples": 1,
-            "steps": 30,
+            "init_image": "<image binary>",
+            "clip_guidance_preset": "FAST_BLUE",
+            "sampler": "K_DPM_2_ANCESTRAL",
+            "image_strength": image_strength,
+            "text_prompts[0][text]": image_prompt,
+            "text_prompts[0][weight]": weight,
+            "text_prompts[1][text]": negative_prompt,
+            "text_prompts[1][weight]": negative_weight,
+            "cfg_scale": cfg_scale,
+            "samples": samples,
+            "seed": seeds,
+            "steps": steps
         }
     )        
     
@@ -201,7 +221,7 @@ def im2im(request):
         return render(request, 'stable_ai/generated.html',context)
         # return redirect('../generated/',context)
     else:
-        return render(request, 'stable_ai/im2im.html')
+        return render(request, 'stable_ai/im2im.html', {'screen_form': screen_form})
 
 def generated(request,context):
         return render(request, 'stable_ai/generated.html',context)
