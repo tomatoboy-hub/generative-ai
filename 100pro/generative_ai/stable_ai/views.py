@@ -7,7 +7,7 @@ from stability_sdk import client
 import stability_sdk.interfaces.gooseai.generation.generation_pb2 as generation
 from PIL import Image
 import io
-
+import random
 engine_id = "stable-diffusion-xl-1024-v1-0"
 api_host = os.getenv('API_HOST', 'https://api.stability.ai')
 api_key = os.getenv("STABILITY_API_KEY")
@@ -75,7 +75,7 @@ def masking_upload(request):
                 init_image=img,
                 mask_image=mask,
                 start_schedule=1,
-                seed=1234, # If attempting to transform an image that was previously generated with our API,
+                seed=random.randint(1,100), # If attempting to transform an image that was previously generated with our API,
                             # initial images benefit from having their own distinct seed rather than using the seed of the original image generation.
                 steps=50, # Amount of inference steps performed on image generation. Defaults to 30.
                 cfg_scale=8.0, # Influences how strongly your generation is guided to match your prompt.
