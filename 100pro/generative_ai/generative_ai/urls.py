@@ -41,6 +41,8 @@ urlpatterns = [
     path('txtotx/', views.txtotx, name='txtotx'),
     path('txtoim/', views.txtoim, name='txtoim'),
     path('images/delete/<int:image_id>/', views.delete_image, name='delete_image'),
+    path('masking/upload', views.masking_upload, name='masking_upload'),
+    path('masking/result', views.masking_result, name='masking_result'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

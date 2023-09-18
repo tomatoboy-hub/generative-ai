@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>マスキング　アップロード</h1>
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <p>画像</p>
+        <input type="file" name="image">
+        <p>マスク画像</p>
+        <input type="file" name="mask">
+        <br><br>
+        <button type="submit">送信</button>
+    </form>
+</body>
+</html>

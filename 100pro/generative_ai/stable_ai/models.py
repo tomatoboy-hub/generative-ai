@@ -4,7 +4,9 @@ def changePath(instance, filename):
     ext = filename.split('.')[-1]
     file_name = f'changed.{ext}'
     return file_name
-
+class Image(models.Model):
+    image = models.ImageField(upload_to='masking/',blank=True, null=True)
+    mask = models.ImageField(upload_to='masking/',blank=True, null=True)
   # Create your models here.
 class SnsModel(models.Model):
     slug = models.SlugField(null=True)

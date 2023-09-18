@@ -23,7 +23,7 @@ from django.urls import path
 urlpatterns = [
     path('', index, name='index'),
     path('im2im/', im2im, name='im2im'),    
-    path('generated/', generated, name='generated'),    
+    path('generated/', generated, name='generated'),
 ]
 
 if settings.DEBUG:

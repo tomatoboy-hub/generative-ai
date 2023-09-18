@@ -5,7 +5,13 @@
 from django import forms
 from django.views.generic.edit import CreateView
 from .models import SnsModel, UploadedImage
+from django import forms
+from .models import Image
 
+class ImageForm(forms.ModelForm):
+    class Meta:
+        model = Image
+        fields = ['image', 'mask']
 class SnsForm(forms.ModelForm):
     class Meta:
         model = SnsModel
