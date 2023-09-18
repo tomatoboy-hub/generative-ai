@@ -3,7 +3,8 @@
 {% block content %}
 {% comment %} データベースから画像と時間を取得し挿入 {% endcomment %}
 <h2 class="title">
-    image to image's result
+    text to image to image's result
+<h2 class="title">
 </h2>
 <br>
 
@@ -17,14 +18,10 @@
                 <br>
             </p>
             <h2>
-                入力されたテキストプロンプト
+                生成された画像
             </h2>
             <br>
-            <h3>
-                {{ dates.content }}
-                <br>
-            </h3>
-            <img src='/media/im2im_generated.png'>
+            <img src='/media/uploaded_images/createimage.png'>
             {% comment %} <img src='/media/im2im_generated.png'> {% endcomment %}
         </div>
     </div>
