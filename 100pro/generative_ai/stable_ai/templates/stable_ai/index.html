@@ -5,12 +5,59 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>text to Image</title>
+        <!-- Google Font -->
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+
+        <!-- Internal CSS -->
+        <style>
+            body {
+                font-family: 'Roboto', sans-serif;
+                background-color: #f4f4f4;
+                color: #333;
+                padding: 20px;
+            }
+    
+            h1 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+    
+            button {
+                background-color: #007BFF;
+                color: #fff;
+                border: none;
+                padding: 10px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                transition: background-color 0.3s;
+            }
+    
+            button:hover {
+                background-color: #0056b3;
+            }
+    
+            form {
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
+    
+            output {
+                margin-left: 10px;
+            }
+            img {
+            max-width: 500px; /* この値はあなたの好みに合わせて調整してください */
+            max-height: 500px; /* この値も好みに合わせて調整してください */
+            object-fit: cover; /* アスペクト比を保持しながらイメージをリサイズ */
+        }
+        </style>
 </head>
 <body>
-    <h1>Generate Image</h1>
+    <h1>テキストからイメージ</h1>
     
     <!-- 追加される部分: Uploaded Images ページへのリンク -->
-    <a href="{% url 'image_list' %}"><button>Uploaded Images</button></a>
+    <a href="{% url 'image_list' %}"><button>作成したイメージ</button></a>
     
 
     <form action="{% url 'index' %}" method="post">
@@ -44,7 +91,7 @@
         <output id="steps_output">{{ form.steps.value }}</output>
         <br>
 
-        <button type="submit">Generate Image</button>
+        <button type="submit">イメージ生成</button>
     </form>
 
     <script>

@@ -4,10 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        /* 基本的なスタイリング */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f3f4f6;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h1 {
+            color: #4a4a4a;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        img {
+            max-width: 150px; /* この値はあなたの好みに合わせて調整してください */
+            max-height: 150px; 
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <h1>Uploaded Images</h1>
-    <a href="{% url 'index' %}"><button>Home</button></a>
+    <h1>生成したイメージ</h1>
+    <a href="{% url 'index' %}"><button>イメージ生成へ</button></a>
     <ul>
         {% for img in images %}
         <li>
@@ -15,7 +71,7 @@
             <!-- ここから画像を削除するためのボタン -->
             <form action="{% url 'delete_image' img.id %}" method="post" style="display: inline;">
                 {% csrf_token %}
-                <button type="submit">Delete</button>
+                <button type="submit">削除</button>
             </form>
             <!-- ここまで -->
         </li>
