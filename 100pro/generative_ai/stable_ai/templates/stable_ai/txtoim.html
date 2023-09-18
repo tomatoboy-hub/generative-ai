@@ -1,53 +1,64 @@
 {% extends "stable_ai/base.html" %} 
 
 {% block content %}
-<h1>TXTOIM</h1>
-<form action="{% url 'txtoim' %}" method="POST", enctype="multipart/form-data">
-    {% csrf_token %}
+<div style="max-width: 700px; margin: 50px auto; padding: 30px; background-color: #f9f9f9; border-radius: 10px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);">
+    <h1 style="text-align: center; margin-bottom: 30px;">イメージからイメージへ</h1>
+    <form action="{% url 'txtoim' %}" method="POST", enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="input-group">
+            {{ new_form.image_prompt.label_tag }}
+            {{ new_form.image_prompt }}
+        </div>
+        <div class="input-group">
+            {{ new_form.negative_prompt.label_tag }}
+            {{ new_form.negative_prompt }}
+        </div>
+        <div class="input-group">
+            {{ new_form.image_strength.label_tag }}
+            {{ new_form.image_strength }}
+            <output id="image_strength_output">{{ new_form.image_strength.value }}</output>
+        </div>
+        <div class="input-group">
+            {{ new_form.cfg_scale.label_tag }}
+            {{ new_form.cfg_scale }}
+            <output id="cfg_scale_output">{{ new_form.cfg_scale.value }}</output>
+        </div>
+        <div class="input-group">
+            {{ new_form.weight.label_tag }}
+            {{ new_form.weight }}
+            <output id="weight_output">{{ new_form.weight.value }}</output>
+        </div>
+        <div class="input-group">
+            {{ new_form.negative_weight.label_tag }}
+            {{ new_form.negative_weight }}
+            <output id="negative_weight_output">{{ new_form.negative_weight.value }}</output>
+        </div>
+        <div class="input-group">
+            {{ new_form.samples.label_tag }}
+            {{ new_form.samples }}
+            <output id="samples_output">{{ new_form.samples.value }}</output>
+        </div>
+        <div class="input-group">
+            {{ new_form.seeds.label_tag }}
+            {{ new_form.seeds }}
+            <output id="seeds_output">{{ new_form.seeds.value }}</output>
+        </div>
+        <div class="input-group">
+            {{ new_form.steps.label_tag }}
+            {{ new_form.steps }}
+            <output id="steps_output">{{ new_form.steps.value }}</output>
+        </div>
 
-    {{ new_form.image_prompt.label_tag }} {{ new_form.image_prompt }}
-    <br>
-    {{ new_form.negative_prompt.label_tag }} {{ new_form.negative_prompt }}
-    <br>
+        <div style="text-align: center; margin-top: 30px;">
+            <input type="submit" id="submit" value="修正する" style="padding: 10px 20px; background-color: #007bff; color: #fff; border: none; border-radius: 5px; cursor: pointer;">
+        </div>
 
-    {{ new_form.image_strength.label_tag }} {{ new_form.image_strength }}
-    <output id="image_strength_output">{{ new_form.image_strength.value }}</output>
-    <br>
-
-    {{ new_form.cfg_scale.label_tag }} {{ new_form.cfg_scale }}
-    <output id="cfg_scale_output">{{ new_form.cfg_scale.value }}</output>
-    <br>
-
-    {{ new_form.weight.label_tag }} {{ new_form.weight }}
-    <output id="weight_output">{{ new_form.weight.value }}</output>
-    <br>
-
-    {{ new_form.negative_weight.label_tag }} {{ new_form.negative_weight }}
-    <output id="negative_weight_output">{{ new_form.negative_weight.value }}</output>
-    <br>
-
-    {{ new_form.samples.label_tag }} {{ new_form.samples }}
-    <output id="samples_output">{{ new_form.samples.value }}</output>
-    <br>
-
-    {{ new_form.seeds.label_tag }} {{ new_form.seeds }}
-    <output id="seeds_output">{{ new_form.seeds.value }}</output>
-    <br>
-
-    {{ new_form.steps.label_tag }} {{ new_form.steps }}
-    <output id="steps_output">{{ new_form.steps.value }}</output>
-    <br>
-
-    <p>{{ form.as_p }}</p>    
-    {% comment %} <input type="text" name="content">  {% endcomment %}
-    <br>
-    <br>
-
-    <input type="submit" id="submit" value="修正する">
-    <br>
-    <img src="/media/uploaded_images/createimage.png" alt="Generated Image">
-
-</form>
+        <div style="text-align: center; margin-top: 20px;">
+            <img src="/media/uploaded_images/createimage.png" alt="Generated Image" style="max-width: 100%; border-radius: 5px;">
+        </div>
+    </form>
+</div>
 
 <script>
     // JavaScript to update the values of the output fields
@@ -79,5 +90,15 @@
         document.getElementById('steps_output').value = this.value;
     }
 </script>
+<style>
+    .input-group {
+        margin-bottom: 20px;
+    }
+    
+    .input-group label {
+        display: block;
+        margin-bottom: 5px;
+    }
+</style>
 {% endblock %}
 
