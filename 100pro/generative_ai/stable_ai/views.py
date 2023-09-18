@@ -76,8 +76,8 @@ def index(request):
             file = InMemoryUploadedFile(image_file, None, image_name, 'image/png', len(image_data), None)
 
             # モデルインスタンスを作成し、データベースに保存
-            # uploaded_image = UploadedImage(image=file)
-            # uploaded_image.save()
+            uploaded_image = UploadedImage(image=file)
+            uploaded_image.save()
 
     return render(request, 'stable_ai/index.html', {'form': form})
 
