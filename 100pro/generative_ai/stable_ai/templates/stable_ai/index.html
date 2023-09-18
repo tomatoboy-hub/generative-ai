@@ -51,9 +51,66 @@
             max-height: 500px; /* この値も好みに合わせて調整してください */
             object-fit: cover; /* アスペクト比を保持しながらイメージをリサイズ */
         }
+        #menuToggle {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        cursor: pointer;
+        z-index: 1000; /* 上部に保持 */
+    }
+
+    /* ハンバーガーアイコンのバーのスタイル */
+    #menuToggle .bar {
+        display: block;
+        width: 25px;
+        height: 3px;
+        margin: 5px auto;
+        background-color: #333;
+    }
+
+    /* メニュー項目のスタイル */
+    #menuItems {
+        position: fixed;
+        top: 0;
+        right: -300px; /* 初めは見えない位置に */
+        width: 300px;
+        height: 100vh;
+        background-color: #fff;
+        box-shadow: -2px 0px 5px rgba(0, 0, 0, 0.3);
+        overflow-y: auto;
+        transition: right 0.3s;
+        z-index: 999; /* ハンバーガーアイコンの下 */
+    }
+
+    #menuItems a {
+        display: block;
+        padding: 15px;
+        text-decoration: none;
+        color: #333;
+        border-bottom: 1px solid #eee;
+    }
+
+    #menuItems a:hover {
+        background-color: #f4f4f4;
+    }
         </style>
 </head>
 <body>
+    <div id="menuToggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <div id="menuItems">
+        <a href="{% url 'index' %}">ホーム</a>
+        <a href="{% url 'im2im' %}">Im2Im</a>
+        <a href="{% url 'image_list' %}">イメージリスト</a>
+        <a href="{% url 'upload_image' %}">イメージアップロード</a>
+        <a href="{% url 'txtotx' %}">TxtToTx</a>
+        <a href="{% url 'txtoim' %}">TxtToIm</a>
+        <a href="{% url 'masking_upload' %}">マスキングアップロード</a>
+        <a href="{% url 'masking_result' %}">マスキング結果</a>
+    </div>
     <h1>テキストからイメージ</h1>
     
     <!-- 追加される部分: Uploaded Images ページへのリンク -->
@@ -115,6 +172,17 @@
         document.getElementById('{{ form.steps.id_for_label }}').oninput = function() {
             document.getElementById('steps_output').value = this.value;
         }
+        const menuToggle = document.getElementById('menuToggle');
+        const menuItems = document.getElementById('menuItems');
+
+        // メニューアイコンがクリックされたときの動作
+        menuToggle.addEventListener('click', () => {
+            if (menuItems.style.right === '-300px') {
+                menuItems.style.right = '0px';
+            } else {
+                menuItems.style.right = '-300px';
+            }
+        });
     </script>
 
     <img src="/media/uploaded_images/v1_txt2img_0.png" alt="Generated Image">
