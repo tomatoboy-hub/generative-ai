@@ -68,7 +68,9 @@
         {% for img in images %}
         <li>
             <img src="{{ img.image.url }}" alt="Uploaded Image">
-            <!-- ここから画像を削除するためのボタン -->
+            <a href="{{ img.image.url }}" download>
+                <button type="button">保存</button>
+            </a>            
             <form action="{% url 'delete_image' img.id %}" method="post" style="display: inline;">
                 {% csrf_token %}
                 <button type="submit">削除</button>

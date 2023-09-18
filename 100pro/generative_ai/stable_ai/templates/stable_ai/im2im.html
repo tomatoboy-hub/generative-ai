@@ -1,6 +1,7 @@
 {% extends "stable_ai/base.html" %} 
 
 {% block content %}
+<h1>イメージからイメージへ</h1>
 <form action="{% url 'im2im' %}" method="POST", enctype="multipart/form-data">
     {% csrf_token %}
 
