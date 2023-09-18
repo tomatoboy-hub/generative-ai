@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>text to Image</title>
+</head>
+<body>
+    <h1>Generate Image</h1>
+    
+    <!-- 追加される部分: Uploaded Images ページへのリンク -->   
+
+    <form action="{% url 'txtotx' %}" method="post">
+        {% csrf_token %}
+
+        {{ form.text_prompt.label_tag }} {{ form.text_prompt }}
+        <br>
+
+        {{ form.cfg_scale.label_tag }} 
+        {{ form.cfg_scale }}
+        <output id="cfg_scale_output">{{ form.cfg_scale.value }}</output>
+        <br>
+
+        {{ form.height.label_tag }} 
+        {{ form.height }}
+        <output id="height_output">{{ form.height.value }}</output>
+        <br>
+
+        {{ form.width.label_tag }} 
+        {{ form.width }}
+        <output id="width_output">{{ form.width.value }}</output>
+        <br>
+
+        {{ form.samples.label_tag }} 
+        {{ form.samples }}
+        <output id="samples_output">{{ form.samples.value }}</output>
+        <br>
+
+        {{ form.steps.label_tag }} 
+        {{ form.steps }}
+        <output id="steps_output">{{ form.steps.value }}</output>
+        <br>
+
+        <button type="submit">Generate Image</button>
+    </form>
+
+    <script>
+        // JavaScript to update the values of the output fields
+        document.getElementById('{{ form.cfg_scale.id_for_label }}').oninput = function() {
+            document.getElementById('cfg_scale_output').value = this.value;
+        }
+
+        document.getElementById('{{ form.height.id_for_label }}').oninput = function() {
+            document.getElementById('height_output').value = this.value;
+        }
+
+        document.getElementById('{{ form.width.id_for_label }}').oninput = function() {
+            document.getElementById('width_output').value = this.value;
+        }
+
+        document.getElementById('{{ form.samples.id_for_label }}').oninput = function() {
+            document.getElementById('samples_output').value = this.value;
+        }
+
+        document.getElementById('{{ form.steps.id_for_label }}').oninput = function() {
+            document.getElementById('steps_output').value = this.value;
+        }
+    </script>
+
+    <img src="/media/uploaded_images/v1_txt2img_0.png" alt="Generated Image">
+</body>
+</html>

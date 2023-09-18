@@ -38,6 +38,8 @@ urlpatterns = [
     path('generated/', views.generated, name='generated'),    
     path('images/', views.image_list, name='image_list'),
     path('upload/', views.upload_image, name='upload_image'),
+    path('txtotx/', views.txtotx, name='txtotx'),
+    path('txtoim/', views.txtoim, name='txtoim'),
     path('images/delete/<int:image_id>/', views.delete_image, name='delete_image'),
 ]
 if settings.DEBUG:
